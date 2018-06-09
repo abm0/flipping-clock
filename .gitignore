@@ -1,4 +1,5 @@
 */.DS_Store
 node_modules/*
-.gulp-scss-cache
+.gulp-scss-cache/*
+.sass-cache/*
 dist/*

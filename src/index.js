@@ -38,9 +38,6 @@ const getCurrentTime = () => {
   return time;
 }
 
-// const renderElement = (element, content) =>
-//  elements[`${element}El`].innerHTML = content;
-
 const renderAMPM = (time) => {
   elements.ampmEl.innerHTML = time.ampm;
 }
@@ -81,6 +78,21 @@ const renderSeconds = (time) => {
 	setInterval(() => {
     const time = getCurrentTime();
 
-   renderSeconds(time);
+    renderSeconds(time);
   }, 1000);
 })();
+
+
+setInterval(() => {
+  const movingEls = document.querySelectorAll('.moving');
+
+  movingEls.forEach((el) => {
+    el.classList.add('turned');
+  });
+
+  setTimeout(() => {
+    movingEls.forEach((el) => {
+      el.classList.remove('turned');
+    });
+  }, 2000)
+}, 3000);

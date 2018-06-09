@@ -9,10 +9,45 @@
 </head>
 <body>
   <div id="clock">
-    <span id="hours"></span> :
-    <span id="minutes"></span> :
-    <span id="seconds"></span>
+    <span id="hours" class="digit">
+
+    </span>
+    <i class="delimiter">:</i>
+    <span id="minutes" class="digit"></span>
+    <i class="delimiter">:</i>
+    <span id="seconds" digit="digit"></span>
     <span id="ampm"></span>
+  </div>
+
+  <div id="card">
+    <div class="half top">
+      <span class="digit-container">
+        <span class="digit">
+          2
+        </span>
+      </span>
+    </div>
+    <div class="half bottom">
+      <span class="digit-container">
+        <span class="digit">
+          1
+        </span>
+      </span>
+    </div>
+    <div class="half top moving">
+      <span class="digit-container">
+        <span class="digit">
+          1
+        </span>
+      </span>
+    </div>
+    <div class="half bottom moving">
+      <span class="digit-container">
+        <span class="digit">
+          2
+        </span>
+      </span>
+    </div>
   </div>
 </body>
 <script src="src/index.js"></script>

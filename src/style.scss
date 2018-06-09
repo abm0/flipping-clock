@@ -2,9 +2,117 @@ html {
   background-color: aliceblue;
 }
 
-#clock {
+i {
+  font-style: normal;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+$scale: 1;
+$defaultCardWidth: 110px;
+$defaultCardHeight: 174px;
+$defaultFontSize: 160px;
+
+@mixin center {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+#clock {
+  display: none;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 60px;
+  font-family: monospace;
+  color: darkcyan;
+}
+
+#card {
+  @include center;
+
+  font-size: $defaultFontSize * $scale;
+  width: $defaultCardWidth * $scale;
+  height: $defaultCardHeight * $scale;
+  padding: 5px;
+  transformsty: preserve-3d;
+
+  .half {
+    border-radius: 10px;
+    border: 2px solid #ccc;
+    width: 100%;
+    height: 100%;
+    background-color: gainsboro;
+    position: absolute;
+    left: 0;
+    height: 50%;
+    overflow: hidden;
+
+    &.top {
+      top: 0;
+      border-bottom: none;
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
+
+      .digit-container {
+        top: 0;
+      }
+    }
+
+    &.bottom {
+      top: 50%;
+      border-top: none;
+      border-top-right-radius: 0;
+      border-top-left-radius: 0;
+
+      .digit-container {
+        bottom: -4px;
+      }
+    }
+
+    .digit-container {
+      position: absolute;
+      left: 0;
+      width: 110px;
+      height: 174px;
+    }
+  }
+
+  .digit {
+    @include center;
+  }
+
+  .moving {
+    z-index: 10;
+    backface-visibility: hidden;
+    transition: none;
+
+    &.bottom {
+      transform-origin: top center;
+      transform: rotateX(180deg);
+    }
+
+    &.top {
+      transform-origin: bottom center;
+      transform: rotateX(0);
+    }
+
+    &.turned {
+      transition: transform 1s ease;
+
+      &.bottom {
+        transform: rotateX(0);
+      }
+
+      &.top {
+        transform: rotateX(180deg);
+      }
+    }
+  }
 }
