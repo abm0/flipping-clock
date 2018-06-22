@@ -67,7 +67,6 @@ const renderSeconds = (time) => {
 }
 
 (function init() {
-  const appEl = document.getElementById('clock');
   const initialTime = getCurrentTime();
 
   renderSeconds(initialTime);
@@ -82,17 +81,24 @@ const renderSeconds = (time) => {
   }, 1000);
 })();
 
+let i = 1;
+
+const movingEls = document.querySelectorAll('.moving');
+const prevDigitEls = document.querySelectorAll('.prev .digit');
+const nextDigitEls = document.querySelectorAll('.next .digit');
 
 setInterval(() => {
-  const movingEls = document.querySelectorAll('.moving');
+  const prevVal = i;
+  i = i >= 9 ? i = 1 : i += 1;
 
-  movingEls.forEach((el) => {
-    el.classList.add('turned');
-  });
+  nextDigitEls.forEach(el => el.innerHTML = i);
+  movingEls.forEach(el => el.classList.add('turned'));
 
   setTimeout(() => {
+    prevDigitEls.forEach(el => (el.innerHTML = prevVal));
+    prevDigitEls.forEach(el => (el.innerHTML = i)); 
     movingEls.forEach((el) => {
       el.classList.remove('turned');
     });
-  }, 2000)
-}, 3000);
+  }, 500);
+}, 1000);
