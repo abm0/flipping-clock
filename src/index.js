@@ -1,104 +1,144 @@
-const entities = ['hours', 'minutes', 'seconds', 'ampm'];
+class Digit {
+  constructor({ selector, value = 0 }) {
+    const digitEl = document.querySelector(selector);
 
-const elements = {};
+    this.flipperEls = digitEl.querySelectorAll('.flipper');
+    this.prevDigitEls = digitEl.querySelectorAll('.prev .digit');
+    this.nextDigitEls = digitEl.querySelectorAll('.next .digit');
 
-entities.forEach((entity) => {
-	elements[`${entity}El`] = document.getElementById(entity);
-});
+    this.value = value;
+    this.prevValue = null;
 
-const formatValues = (time) => {
-  Object.keys(time).forEach((key) => {
-  	if (key === 'ampm') return;
-
-    let value = time[key];
-
-    if (parseInt(value) < 10) {
-      time[key] = '0' + value;
-    }
-  });
-}
-
-const getCurrentTime = () => {
-  const date = new Date();
-
-  const time = {
-  	hours: date.getHours(),
-    minutes: date.getMinutes(),
-    seconds: date.getSeconds(),
-    ampm: 'AM',
-  };
-
-  if (time.hours >= 12) {
-    time.ampm = 'PM';
-    time.hours -= 12;
+    this.renderInitialValue();
   }
 
-  formatValues(time);
+  setValue(nextValue) {
+    this.prevValue = this.value;
+    this.value = nextValue;
 
-  return time;
-}
+    if (this.value === this.prevValue) return;
 
-const renderAMPM = (time) => {
-  elements.ampmEl.innerHTML = time.ampm;
-}
+    this.flip();
+  }
 
-const renderHours = (time) => {
-	elements.hoursEl.innerHTML = time.hours;
+  renderInitialValue() {
+    const {
+      prevDigitEls,
+      nextDigitEls,
+    } = this;
 
-  if (time.hours === '00') {
-    renderAMPM(time);
+    [...prevDigitEls, ...nextDigitEls].forEach(el => (el.innerHTML = this.value));
+  }
+
+  flip() {
+    this.nextDigitEls.forEach(el => el.innerHTML = this.value);
+    this.flipperEls.forEach(el => el.classList.add('turned'));
+
+    setTimeout(() => {
+      this.prevDigitEls.forEach(el => (el.innerHTML = this.value)); 
+
+      this.flipperEls.forEach((el) => {
+        el.classList.remove('turned');
+      });
+    }, 500);
   }
 }
 
-const renderMinutes = (time) => {
-  elements.minutesEl.innerHTML = time.minutes;
+class Clock {
+  constructor(props) {
+    const baseEl = document.querySelector("#clock");
+    const currentTime = this.getCurrentTime();
 
-  if (time.minutes === '00') {
-    renderHours(time);
+    this.digits = [
+      'hours-tens', 
+      'hours-ones',
+      'minutes-tens',
+      'minutes-ones',
+      'seconds-tens',
+      'seconds-ones'
+    ];
+
+    this.buildDigits(currentTime);
+
+    setInterval(this.flip.bind(this), 1000);
   }
-}
 
-const renderSeconds = (time) => {
-	elements.secondsEl.innerHTML = time.seconds;
+  getCurrentTime() {
+    const date = new Date();
 
-  if (time.seconds === '00') {
-    renderMinutes(time);
+    const time = {
+      hours: date.getHours(),
+      minutes: date.getMinutes(),
+      seconds: date.getSeconds(),
+      // ampm: "AM"
+    };
+
+    // if (time.hours >= 12) {
+    //   time.ampm = "PM";
+    //   time.hours -= 12;
+    // }
+
+    this.formatValues(time);
+
+    return time;
   }
-}
 
-(function init() {
-  const initialTime = getCurrentTime();
+  formatValues(time) {
+    Object.keys(time).forEach(key => {
+      if (key === "ampm") return;
 
-  renderSeconds(initialTime);
-  renderMinutes(initialTime);
-  renderHours(initialTime);
-  renderAMPM(initialTime);
+      let value = time[key];
 
-	setInterval(() => {
-    const time = getCurrentTime();
+      if (parseInt(value) < 10) {
+        time[key] = "0" + value;
+      }
 
-    renderSeconds(time);
-  }, 1000);
-})();
-
-let i = 1;
-
-const movingEls = document.querySelectorAll('.moving');
-const prevDigitEls = document.querySelectorAll('.prev .digit');
-const nextDigitEls = document.querySelectorAll('.next .digit');
-
-setInterval(() => {
-  const prevVal = i;
-  i = i >= 9 ? i = 1 : i += 1;
-
-  nextDigitEls.forEach(el => el.innerHTML = i);
-  movingEls.forEach(el => el.classList.add('turned'));
-
-  setTimeout(() => {
-    prevDigitEls.forEach(el => (el.innerHTML = prevVal));
-    prevDigitEls.forEach(el => (el.innerHTML = i)); 
-    movingEls.forEach((el) => {
-      el.classList.remove('turned');
+      time[key] = time[key].toString();
     });
-  }, 500);
-}, 1000);
+  }
+
+  getDigitProps(digitName) {
+    const type = digitName.split('-')[0];
+    const position = digitName.split('-')[1];
+
+    let positionIndex;
+
+    switch (position) {
+      case 'tens':
+        positionIndex = 0;
+        break;
+
+      case 'ones':
+        positionIndex = 1;
+        break;
+    }
+    
+    return { type, position, positionIndex };
+  }
+
+  buildDigits(time) {
+    this.digits.forEach((digitName) => {
+      const { type, position, positionIndex } = this.getDigitProps(digitName);
+
+      const selector = `#${type} .${position}-digit`;
+      
+      this[digitName] = new Digit({
+        selector,
+        value: time[type][positionIndex]
+      });
+    });
+  }
+
+  flip() {
+    const time = this.getCurrentTime();
+
+    this.digits.forEach((digitName) => {
+      const { type, positionIndex } = this.getDigitProps(digitName);
+
+      this[digitName].setValue(time[type][positionIndex]);
+    });
+
+  }
+}
+
+new Clock();

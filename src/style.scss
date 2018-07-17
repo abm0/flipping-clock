@@ -25,23 +25,28 @@ $trnsEasing: ease-in;
 }
 
 #clock {
-  display: none;
-
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: darkcyan;
+  color: #008b8b;
+  white-space: nowrap;
+
+  .delimiter {
+    font-size: 90px;
+    color: #2b2b2b;
+    vertical-align: 67px;
+  }
 }
 
-#card {
-  @include center;
-
+.digit-card {
+  // @include center;
+  display: inline-block;
+  position: relative;
   font-size: $defaultFontSize * $scale;
   width: $defaultCardWidth * $scale;
   height: $defaultCardHeight * $scale;
   padding: 5px;
-  transformsty: preserve-3d;
 
   .half {
     border-radius: 10px;
@@ -98,7 +103,7 @@ $trnsEasing: ease-in;
     color: #fffdf4;
   }
 
-  .moving {
+  .flipper {
     z-index: 10;
     backface-visibility: hidden;
     transition: none;
