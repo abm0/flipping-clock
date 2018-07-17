@@ -1,0 +1,91 @@
+html {
+  background-color: aliceblue; }
+
+i {
+  font-style: normal; }
+
+* {
+  box-sizing: border-box; }
+
+#clock {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #008b8b;
+  white-space: nowrap; }
+  #clock .delimiter {
+    font-size: 90px;
+    color: #2b2b2b;
+    vertical-align: 67px; }
+
+.digit-card {
+  display: inline-block;
+  position: relative;
+  font-size: 160px;
+  width: 110px;
+  height: 174px;
+  padding: 5px; }
+  .digit-card .half {
+    border-radius: 10px;
+    border: 2px solid #2b2b2b;
+    width: 100%;
+    height: 100%;
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#4c4c4c+0,595959+12,474747+46,2b2b2b+100 */
+    background: #4c4c4c;
+    /* Old browsers */
+    background: -moz-linear-gradient(top, #4c4c4c 0%, #595959 12%, #474747 46%, #2b2b2b 100%);
+    /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #4c4c4c 0%, #595959 12%, #474747 46%, #2b2b2b 100%);
+    /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #4c4c4c 0%, #595959 12%, #474747 46%, #2b2b2b 100%);
+    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4c4c4c', endColorstr='#2b2b2b',GradientType=0 );
+    /* IE6-9 */
+    position: absolute;
+    left: 0;
+    height: 50%;
+    overflow: hidden; }
+    .digit-card .half.top {
+      top: 0;
+      border-bottom: none;
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0; }
+      .digit-card .half.top .digit-container {
+        top: 0; }
+    .digit-card .half.bottom {
+      top: 50%;
+      border-top: none;
+      border-top-right-radius: 0;
+      border-top-left-radius: 0; }
+      .digit-card .half.bottom .digit-container {
+        bottom: -4px; }
+    .digit-card .half .digit-container {
+      position: absolute;
+      left: 0;
+      width: 110px;
+      height: 174px; }
+  .digit-card .digit {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Krona One', sans-serif;
+    font-size: 110px;
+    color: #fffdf4; }
+  .digit-card .flipper {
+    z-index: 10;
+    backface-visibility: hidden;
+    transition: none; }
+    .digit-card .flipper.bottom {
+      transform-origin: top center;
+      transform: rotateX(180deg); }
+    .digit-card .flipper.top {
+      transform-origin: bottom center;
+      transform: rotateX(0); }
+    .digit-card .flipper.turned {
+      transition: transform 0.3s ease-in; }
+      .digit-card .flipper.turned.bottom {
+        transform: rotateX(0); }
+      .digit-card .flipper.turned.top {
+        transform: rotateX(180deg); }
