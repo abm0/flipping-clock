@@ -59,8 +59,6 @@ class Clock {
     ];
 
     this.buildDigits(currentTime);
-
-    setInterval(this.flip.bind(this), 1000);
   }
 
   getCurrentTime() {
@@ -129,7 +127,7 @@ class Clock {
     });
   }
 
-  flip() {
+  tick() {
     const time = this.getCurrentTime();
 
     this.digits.forEach((digitName) => {
@@ -141,4 +139,8 @@ class Clock {
   }
 }
 
-new Clock();
+const clock = new Clock();
+
+setInterval(() => {
+  clock.tick();
+}, 1000);

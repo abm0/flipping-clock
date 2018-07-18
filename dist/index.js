@@ -86,8 +86,6 @@ var Clock = function () {
     this.digits = ['hours-tens', 'hours-ones', 'minutes-tens', 'minutes-ones', 'seconds-tens', 'seconds-ones'];
 
     this.buildDigits(currentTime);
-
-    setInterval(this.flip.bind(this), 1000);
   }
 
   _createClass(Clock, [{
@@ -166,8 +164,8 @@ var Clock = function () {
       });
     }
   }, {
-    key: 'flip',
-    value: function flip() {
+    key: 'tick',
+    value: function tick() {
       var _this4 = this;
 
       var time = this.getCurrentTime();
@@ -185,4 +183,8 @@ var Clock = function () {
   return Clock;
 }();
 
-new Clock();
+var clock = new Clock();
+
+setInterval(function () {
+  clock.tick();
+}, 1000);
